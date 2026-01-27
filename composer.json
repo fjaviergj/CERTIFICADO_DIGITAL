@@ -1,0 +1,31 @@
+{
+    "name": "antigravity/certificado-digital",
+    "description": "POC de Login con Certificado Digital y AutoFirma",
+    "type": "project",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Antigravity",
+            "email": "agent@example.com"
+        }
+    ],
+    "require": {
+        "php": ">=8.2",
+        "tecnickcom/tcpdf": "^6.7"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true,
+        "platform": {
+            "php": "8.2.0"
+        }
+    }
+}
