@@ -21,8 +21,8 @@ const AutoFirmaClient = {
         // La firma IMPLÍCITA (Attached) incluye los datos dentro del CMS, facilitando la validación en PHP
         let extraParams = "mode=implicit";
         if (certSerial) {
-            // Sintaxis de filtrado oficial: filters: Key1=Val1;Key2=Val2
-            extraParams += "\nfilters=serialnumber=" + certSerial;
+            // Probamos la sintaxis filter:serialNumber=HEX que es muy común en AutoScript
+            extraParams += "\nfilter=serialNumber:" + certSerial;
         }
 
         console.log("Invocando AutoFirma (Implicit). Filtro serial:", certSerial || "ninguno");
@@ -82,8 +82,19 @@ document.addEventListener('DOMContentLoaded', function () {
             AutoFirmaClient.sign(dataToSign, certSerial, function (signature) {
                 // Success
                 console.log("Firma recibida exitosamente");
+                btnSign.innerText = "¡Firma Completada! Procesando...";
                 inputSignature.value = signature;
-                form.submit();
+
+                // Pequeña espera para que el usuario vea el éxito antes de que se descargue el PDF
+                setTimeout(() => {
+                    form.submit();
+
+                    // Después de enviar el formulario (que inicia la descarga), 
+                    // redirigimos tras unos segundos para que la página no se quede "muerta"
+                    setTimeout(() => {
+                        window.location.href = "/signature/success";
+                    }, 3000);
+                }, 1000);
             }, function (error) {
                 // Error
                 alert("Error al firmar: " + error);

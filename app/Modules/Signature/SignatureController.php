@@ -85,4 +85,33 @@ class SignatureController
             View::render('@Auth/error', ['error' => 'La firma electrónica no es válida.']);
         }
     }
+
+    public function success(): void
+    {
+        View::render('@Signature/success', [
+            'title' => 'Trámite Completado'
+        ]);
+    }
+
+    public function list(): void
+    {
+        if (session_status() === PHP_SESSION_NONE)
+            session_start();
+        $usuarioId = $_SESSION['user_id'] ?? null;
+
+        if (!$usuarioId) {
+            header('Location: /');
+            exit;
+        }
+
+        $db = \App\Config\Database::getConnection();
+        $stmt = $db->prepare("SELECT * FROM documentos WHERE usuario_id = :uid ORDER BY fecha_creacion DESC");
+        $stmt->execute([':uid' => $usuarioId]);
+        $documentos = $stmt->fetchAll();
+
+        View::render('@Documents/list', [
+            'documentos' => $documentos,
+            'title' => 'Mis Documentos'
+        ]);
+    }
 }

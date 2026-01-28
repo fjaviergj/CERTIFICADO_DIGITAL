@@ -75,6 +75,14 @@ try {
             }
             break;
 
+        case '/signature/success':
+            (new \App\Modules\Signature\SignatureController())->success();
+            break;
+
+        case '/documents/list':
+            (new \App\Modules\Signature\SignatureController())->list();
+            break;
+
         case '/verify':
             // Verificación de CSV
             (new \App\Modules\Documents\DocumentsController())->verify();

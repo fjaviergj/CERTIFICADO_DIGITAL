@@ -107,7 +107,7 @@
                 <div class="action-card">
                     <h3>Mis Documentos</h3>
                     <p>Consulte los documentos firmados anteriormente.</p>
-                    <a href="#" class="btn" style="background-color: #6c757d;">Próximamente</a>
+                    <a href="/documents/list" class="btn">Ver Listado</a>
                 </div>
             </div>
         </div>
