@@ -58,6 +58,12 @@
 </head>
 
 <body>
+    <div style="margin-bottom: 20px; text-align: right; max-width: 600px; margin: 0 auto 20px;">
+        <a href="/dashboard" style="color: #0056b3; text-decoration: none; margin-right: 20px;">← Volver al
+            Dashboard</a>
+        <a href="/auth/logout" style="color: #d9534f; text-decoration: none;">Cerrar Sesión</a>
+    </div>
+
     <div class="card">
         <h1>Firmar Documento</h1>
         <p>A continuación se firmará un documento XML de prueba.</p>
@@ -67,7 +73,9 @@
             <pre><?= $dataToSign ?></pre>
         </div>
 
-        <button id="btn-sign" class="btn" data-content="<?= $dataToSign ?>">Firmar con AutoFirma</button>
+        <button id="btn-sign" class="btn" data-content="<?= $dataToSign ?>" data-cert-serial="<?= $certSerial ?>">
+            Firmar con AutoFirma
+        </button>
 
         <!-- Formulario oculto para enviar la firma al servidor -->
         <form id="form-signature" action="/signature/process" method="POST" style="display:none;">
@@ -75,7 +83,8 @@
         </form>
     </div>
 
-    <!-- Script de integración -->
+    <!-- Scripts de AutoFirma Oficial y personalización -->
+    <script src="/assets/js/AutoScript.js"></script>
     <script src="/assets/js/signature.js"></script>
 </body>
 

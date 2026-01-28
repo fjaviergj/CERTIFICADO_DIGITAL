@@ -50,6 +50,11 @@ try {
             (new \App\Modules\Auth\AuthController())->register();
             break;
 
+        case '/auth/logout':
+            // Cerrar sesión
+            (new \App\Modules\Auth\AuthController())->logout();
+            break;
+
         case '/dashboard':
             // Panel principal usuario logueado
             // Middleware check session aqui

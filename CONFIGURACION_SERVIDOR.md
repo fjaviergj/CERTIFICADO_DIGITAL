@@ -417,21 +417,26 @@ Si tu usuario/contraseña de MySQL es diferente de `root` / `""` (vacío), edita
 
 ## 6. INTEGRACIÓN CON AUTOFIRMA
 
-### Estado Actual
+El proyecto utiliza el script oficial **AutoScript.js** proporcionado por el Ministerio de Asuntos Económicos y Transformación Digital.
 
-El proyecto está **preparado** para integrar AutoFirma mediante la librería oficial `AutoScript.js`.
+### 📥 Descarga de archivos oficiales
+En caso de necesitar actualizar los archivos o desplegar desde cero, siga estos pasos:
 
-**Modo actual**: Simulación para pruebas (permite navegar sin tener AutoFirma instalado).
+1. **Acceder al Portal CTT**: [Portal de Administración Electrónica - Cliente @firma](https://administracionelectronica.gob.es/ctt/clienteafirma/descargas)
+2. **Descargar AutoScript**: Busque el paquete **AutoScript v1.9** (o versión superior disponible). Aparecerá como un archivo ZIP.
+3. **Extraer y Copiar**: 
+   - Extraiga el contenido del ZIP.
+   - Localice el archivo `js/autoscript.js`.
+   - Cópielo a la carpeta del proyecto en: `public/assets/js/AutoScript.js`.
 
-### Para Activar Firma Real
+### ⚙️ Configuración en la aplicación
+La aplicación detectará automáticamente la presencia de `AutoScript.js`. 
 
-1. Descargar `AutoScript.js` de la web oficial de Firma Electrónica
-2. Colocarlo en: `public/assets/js/AutoScript.js`
-3. Incluirlo en la cabecera de: `app/Modules/Signature/Views/test.php`
+- **Modo Real**: Si `AutoScript.js` está presente, se invocará a la aplicación AutoFirma instalada en el equipo del usuario mediante el protocolo `afirma://`.
+- **Modo Simulado**: Si el archivo no existe, la aplicación mostrará un aviso y permitirá realizar una firma simulada para pruebas de flujo de servidor.
 
-```html
-<script src="/assets/js/AutoScript.js" defer></script>
-```
+> [!IMPORTANT]
+> **AutoFirma Desktop** debe estar instalada en el ordenador del usuario final para que la firma funcione. Se puede descargar desde [firmaelectronica.gob.es](https://firmaelectronica.gob.es/Home/Descargas.html).
 
 ---
 

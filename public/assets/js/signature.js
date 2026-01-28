@@ -11,58 +11,80 @@ const AutoFirmaClient = {
      * @param {function} callbackSuccess Callback con la firma resultante.
      * @param {function} callbackError Callback en caso de error.
      */
-    sign: function(dataB64, callbackSuccess, callbackError) {
+    sign: function (dataB64, certSerial, callbackSuccess, callbackError) {
         // Formato CAdES (el estándar para firmas electrónicas en España)
         // Algoritmo SHA256 con RSA
         const format = "CAdES";
         const algorithm = "SHA256withRSA";
-        const extraParams = "mode=implicit"; // Firma implícita incluye los datos originales en la firma
 
-        console.log("Invocando AutoFirma para formato:", format);
-
-        // 1. Intentar usar AutoScript.js de la administración si está cargado
-        if (typeof AutoScript !== 'undefined') {
-            AutoScript.sign(dataB64, algorithm, format, extraParams, callbackSuccess, callbackError);
-            return;
+        // Filtro para usar el mismo certificado que el de login
+        // La firma IMPLÍCITA (Attached) incluye los datos dentro del CMS, facilitando la validación en PHP
+        let extraParams = "mode=implicit";
+        if (certSerial) {
+            // Sintaxis de filtrado oficial: filters: Key1=Val1;Key2=Val2
+            extraParams += "\nfilters=serialnumber=" + certSerial;
         }
 
-        // 2. Si no hay AutoScript (lo más común si no se ha descargado el .js),
-        // mostramos una advertencia detallada.
-        const msg = "Para realizar la firma real, es necesario:\n" +
-            "1. Tener instalada la aplicación AutoFirma en su ordenador.\n" +
-            "2. El desarrollador debe descargar 'AutoScript.js' de la web oficial de firmaelectronica.gob.es y colocarlo en el proyecto.\n\n" +
-            "¿Desea realizar una SIMULACIÓN de firma para probar el flujo del servidor?";
+        console.log("Invocando AutoFirma (Implicit). Filtro serial:", certSerial || "ninguno");
 
-        if (confirm(msg)) {
-            // Simulamos un retraso de red/proceso
-            setTimeout(() => {
-                const fakeSignature = "SIM_SIG_" + btoa(Date.now().toString());
-                callbackSuccess(fakeSignature);
-            }, 1500);
-        } else {
-            callbackError("Operación cancelada por el usuario o falta de requisitos técnicos.");
+        try {
+            // 1. Verificar si AutoScript está disponible (Cargado en la vista)
+            if (typeof AutoScript !== 'undefined') {
+                AutoScript.sign(dataB64, algorithm, format, extraParams, callbackSuccess, callbackError);
+                return;
+            }
+
+            // 2. Si no hay AutoScript (fallback o error de carga)
+            console.warn("AutoScript.js no detectado. Reintentando con aviso al usuario.");
+
+            const msg = "Para realizar la firma real, es necesario tener instalada la aplicación AutoFirma.\n\n" +
+                "No se ha detectado el componente oficial de integración.\n" +
+                "¿Desea intentar una SIMULACIÓN de firma para pruebas de desarrollo?";
+
+            if (confirm(msg)) {
+                setTimeout(() => {
+                    const fakeSignature = "SIM_SIG_" + btoa(Date.now().toString());
+                    callbackSuccess(fakeSignature);
+                }, 1500);
+            } else {
+                callbackError("Falta componente AutoScript.js.");
+            }
+        } catch (e) {
+            console.error("Excepción al llamar a AutoScript:", e);
+            callbackError(e.message);
         }
     }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+    // Inicializar el componente oficial si está disponible
+    if (typeof AutoScript !== 'undefined') {
+        try {
+            console.log("Inicializando componente oficial AutoScript...");
+            AutoScript.cargarAppAfirma();
+        } catch (e) {
+            console.error("Error al inicializar AutoScript:", e);
+        }
+    }
+
     const btnSign = document.getElementById('btn-sign');
     const form = document.getElementById('form-signature');
     const inputSignature = document.getElementById('input-signature');
 
-    if(btnSign) {
-        btnSign.addEventListener('click', function() {
+    if (btnSign) {
+        btnSign.addEventListener('click', function () {
             const dataToSign = btnSign.dataset.content; // Base64
-            
+            const certSerial = btnSign.dataset.certSerial;
+
             btnSign.disabled = true;
             btnSign.innerText = "Abriendo AutoFirma...";
 
-            AutoFirmaClient.sign(dataToSign, function(signature) {
+            AutoFirmaClient.sign(dataToSign, certSerial, function (signature) {
                 // Success
-                console.log("Firma recibida:", signature);
+                console.log("Firma recibida exitosamente");
                 inputSignature.value = signature;
                 form.submit();
-            }, function(error) {
+            }, function (error) {
                 // Error
                 alert("Error al firmar: " + error);
                 btnSign.disabled = false;

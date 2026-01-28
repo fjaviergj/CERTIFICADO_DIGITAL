@@ -30,7 +30,8 @@ class SignatureController
 
         View::render('@Signature/test', [
             'dataToSign' => $dataToSignB64,
-            'title' => 'Firma de Documento'
+            'title' => 'Firma de Documento',
+            'certSerial' => $_SESSION['cert_serial'] ?? ''
         ]);
     }
 

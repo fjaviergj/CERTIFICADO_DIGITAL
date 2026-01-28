@@ -87,6 +87,8 @@
         <div class="user-info">
             Hola, <?= htmlspecialchars($userName) ?>
             <small>(<?= htmlspecialchars($certSerial) ?>)</small>
+            <a href="/auth/logout"
+                style="margin-left: 15px; color: #d9534f; text-decoration: none; font-size: 0.9rem;">Cerrar Sesión</a>
         </div>
     </header>
 
