@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'antigravity/certificado-digital',
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
-        'reference' => null,
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '6add110f0825ef1b73cc9b9e5f35c90833a3fd68',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         'antigravity/certificado-digital' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
-            'reference' => null,
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '6add110f0825ef1b73cc9b9e5f35c90833a3fd68',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

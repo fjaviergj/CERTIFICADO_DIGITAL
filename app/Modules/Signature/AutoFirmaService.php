@@ -153,6 +153,9 @@ class AutoFirmaService
      */
     public function generateCSV(): string
     {
-        return strtoupper(bin2hex(random_bytes(8))); // 16 caracteres hex
+        $bytes = random_bytes(8); // 64 bits de entropía
+        $hex = strtoupper(bin2hex($bytes));
+        // Formato: XXXX-XXXX-XXXX-XXXX
+        return substr($hex, 0, 4) . '-' . substr($hex, 4, 4) . '-' . substr($hex, 8, 4) . '-' . substr($hex, 12, 4);
     }
 }

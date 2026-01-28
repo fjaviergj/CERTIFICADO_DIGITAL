@@ -37,22 +37,22 @@ class DocumentsController
     }
 
     /**
-     * Descargar el PDF original desde la verificación.
+     * Descargar el PDF original desde la verificación usando CSV.
      */
     public function downloadOriginal(): void
     {
-        $id = (int) ($_GET['id'] ?? 0);
-        if ($id <= 0) {
-            die("ID no válido");
+        $csv = $_GET['csv'] ?? '';
+        if (empty($csv)) {
+            die("CSV no proporcionado");
         }
 
         $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT * FROM documentos WHERE id = :id LIMIT 1");
-        $stmt->execute([':id' => $id]);
+        $stmt = $db->prepare("SELECT * FROM documentos WHERE csv = :csv LIMIT 1");
+        $stmt->execute([':csv' => $csv]);
         $doc = $stmt->fetch();
 
         if (!$doc) {
-            die("Documento no encontrado");
+            die("Documento no encontrado o CSV inválido");
         }
 
         // Regenerar el justificante para descarga

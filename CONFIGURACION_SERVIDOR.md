@@ -69,6 +69,26 @@ Si faltan, activarlos desde:
 
 ---
 
+#### D) Composer (Gestor de Dependencias)
+
+El proyecto utiliza Composer para gestionar librerías de terceros (como TCPDF para la generación de PDFs).
+
+**Instalación de dependencias**:
+Si estás desplegando el proyecto por primera vez o has añadido nuevas librerías:
+
+```powershell
+# Ir a la carpeta raíz del proyecto
+cd C:\wamp64\www\CERTIFICADO_DIGITAL
+
+# Ejecutar la instalación de dependencias
+C:\wamp64\bin\php\php8.4.16\php.exe composer.phar install
+```
+
+**Librerías críticas instaladas**:
+- **tecnickcom/tcpdf**: Generación de "Copias Auténticas" en PDF con soporte para códigos QR y CSV.
+
+---
+
 ### 📥 Software Externo (Descarga Manual)
 
 1. **mkcert** (generador de certificados SSL locales)
@@ -111,12 +131,12 @@ Esto crea e instala una Autoridad de Certificación local en Windows y navegador
 
 ```bash
 cd C:\mkcert
-mkcert certificado.local certificado localhost 127.0.0.1 ::1
+mkcert certificado localhost 127.0.0.1 ::1
 ```
 
 Se generarán dos archivos:
-- `certificado.local+4.pem` (certificado)
-- `certificado.local+4-key.pem` (clave privada)
+- `certificado.pem` (certificado)
+- `certificado-key.pem` (clave privada)
 
 ---
 
@@ -126,10 +146,10 @@ Ejecutar estos comandos en **Símbolo del sistema** (ajustar el nombre del archi
 
 ```batch
 :: 1️⃣ Convertir certificado de PEM a CRT
-C:\wamp64\bin\apache\apache2.4.66.1\bin\openssl.exe x509 -outform pem -in "certificado.local+4.pem" -out certificado.crt
+C:\wamp64\bin\apache\apache2.4.66.1\bin\openssl.exe x509 -outform pem -in "certificado.pem" -out certificado.crt
 
 :: 2️⃣ Renombrar clave privada
-rename "certificado.local+4-key.pem" certificado.key
+rename "certificado-key.pem" certificado.key
 
 :: 3️⃣ Crear archivo PFX (opcional, para importar en Windows)
 C:\wamp64\bin\apache\apache2.4.66.1\bin\openssl.exe pkcs12 -export -out certificado.pfx -inkey certificado.key -in certificado.crt -passout pass:
@@ -140,7 +160,7 @@ move /Y certificado.key C:\wamp64\bin\Certs\Site\
 move /Y certificado.pfx C:\wamp64\bin\Certs\Site\
 
 :: 5️⃣ Limpiar archivos temporales
-del "certificado.local+4.pem"
+del "certificado.pem"
 ```
 
 ---

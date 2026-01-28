@@ -61,9 +61,20 @@ try {
             (new \App\Modules\Auth\AuthController())->dashboard();
             break;
 
-        case '/signature/test':
-            // Pantalla prueba firma
+        case '/signature/request':
             (new \App\Modules\Signature\SignatureController())->index();
+            break;
+
+        case '/signature/prepare':
+            if ($requestMethod === 'POST') {
+                (new \App\Modules\Signature\SignatureController())->prepare();
+            } else {
+                header('Location: /signature/request');
+            }
+            break;
+
+        case '/signature/sign':
+            (new \App\Modules\Signature\SignatureController())->sign();
             break;
 
         case '/signature/process':

@@ -101,7 +101,7 @@
                 <div class="action-card">
                     <h3>Firma de Documentos</h3>
                     <p>Prueba de integración con AutoFirma para firmar un documento XML/PDF.</p>
-                    <a href="/signature/test" class="btn">Iniciar Firma</a>
+                    <a href="/signature/request" class="btn">Iniciar Firma</a>
                 </div>
 
                 <div class="action-card">

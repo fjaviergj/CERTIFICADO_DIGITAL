@@ -131,7 +131,7 @@
                                         <?= htmlspecialchars($doc['csv']) ?>
                                     </span></td>
                                 <td>
-                                    <a href="/verify/download?id=<?= $doc['id'] ?>" target="_blank"
+                                    <a href="/verify/download?csv=<?= urlencode((string) $doc['csv']) ?>" target="_blank"
                                         class="btn btn-view">Descargar PDF</a>
                                 </td>
                             </tr>

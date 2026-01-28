@@ -26,6 +26,7 @@ Utilizaremos la librería **TCPDF** para PHP:
 - **Dinamismo**: El PDF se genera solo cuando el usuario hace clic en "Descargar", inyectando los datos de la BD en la plantilla.
 - **Marca de Firma**: Se incluirá un recuadro lateral o pie de página con el texto oficial: 
   > *"Firmado electrónicamente por [Usuario] el [Fecha]. CSV: [Código]. Verificable en [URL_PUNTO_VERIFICACION]"*.
+- **Código QR**: Se generará un QR junto al CSV que enlace directamente a la URL de verificación para facilitar el acceso desde dispositivos móviles.
 
 ---
 
@@ -43,8 +44,9 @@ Utilizaremos la librería **TCPDF** para PHP:
 - Mejora de `AutoFirmaService` para generar CSVs únicos siguiendo un patrón seguro.
 - Lógica de "estampado": colocar visualmente el CSV en el margen del documento PDF generado.
 
-### Fase 4: Punto de Verificación (CSV)
-- Desarrollo de la página pública de verificación (`/verify`) donde cualquier tercero, introduciendo solo el CSV, pueda obtener el documento original y validar su integridad.
+### Fase 4: Punto de Verificación (CSV/QR)
+- Desarrollo de la página pública de verificación (`/verify`) donde cualquier tercero, introduciendo el CSV o escaneando el QR, pueda obtener el documento original y validar su integridad.
+- El CSV actúa como clave de acceso compartida: permite la visualización y descarga de la "Copia Auténtica" sin necesidad de login.
 
 ---
 
